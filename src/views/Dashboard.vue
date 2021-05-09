@@ -82,8 +82,8 @@
 import Navigation from "../components/Navigation";
 import CardCases from "../components/CardCases";
 import Bar from "../components/Bar";
-import GoogleMapLoader from "../components/GoogleMapLoader.vue";
 import Footer from "../components/Footer";
+import GoogleMapLoader from "../components/GoogleMapLoader";
 import { mapGetters } from "vuex";
 
 export default {

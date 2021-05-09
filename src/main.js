@@ -17,6 +17,7 @@ import { List } from "vant";
 import { Locale } from "vant";
 import enUS from "vant/es/locale/lang/en-US";
 import { Panel } from "vant";
+import JsonExcel from "vue-json-excel";
 
 Vue.use(Panel);
 Locale.use("en-US", enUS);
@@ -41,9 +42,11 @@ Vue.use(Vant);
 Vue.use(VueGoogleMaps, {
   load: {
     key: "AIzaSyCkFAJxPsDKr-H7QVlvk6GKNmCgh4uFxO4",
-    libraries: "places"
-  }
+    libraries: "places",
+  },
 });
+
+Vue.use(JsonExcel);
 
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
@@ -51,5 +54,5 @@ import "bootstrap-vue/dist/bootstrap-vue.css";
 new Vue({
   router,
   store,
-  render: h => h(App)
+  render: (h) => h(App),
 }).$mount("#app");

@@ -122,12 +122,28 @@
               ></b-form-input>
             </b-form>
           </b-col>
-          <b-col lg="4" class="text-center mt-1"
-            >Latitude : {{ initialLat }}</b-col
-          >
-          <b-col lg="4" class="text-center mt-1"
-            >Longtitude : {{ initalLng }}</b-col
-          >
+          <b-col lg="4" class="text-center mt-1">
+            <b-form-input
+              type="text"
+              size="sm"
+              placeholder="Latitude"
+              v-model="initialLat"
+              autocomplete="off"
+              block
+              required
+            ></b-form-input
+          ></b-col>
+          <b-col lg="4" class="text-center mt-1">
+            <b-form-input
+              type="text"
+              size="sm"
+              placeholder="Longtitude"
+              v-model="initalLng"
+              autocomplete="off"
+              block
+              required
+            ></b-form-input
+          ></b-col>
         </b-row>
       </b-container>
 

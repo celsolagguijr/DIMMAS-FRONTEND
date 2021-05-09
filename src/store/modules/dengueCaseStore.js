@@ -109,7 +109,7 @@ const getters = {
           ]
         },
         {
-          label: "Recovery",
+          label: "Recoveries",
           backgroundColor: "#28A745",
           data: [
             ...chartDatas.map(data =>
@@ -118,7 +118,7 @@ const getters = {
           ]
         },
         {
-          label: "Death",
+          label: "Deaths",
           backgroundColor: "#000",
           data: [
             ...chartDatas.map(data =>

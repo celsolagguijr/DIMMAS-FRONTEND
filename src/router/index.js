@@ -13,6 +13,7 @@ import HomeMobile from "../views/HomeMobile.vue";
 import DinfoMobile from "../views/DinfoMobile.vue";
 import ViewContentMobile from "../views/ViewContentMobile.vue";
 import MyLocation from "../views/ViewYourLocation.vue";
+import Reports from "../views/Reports.vue";
 
 Vue.use(VueRouter);
 
@@ -40,6 +41,11 @@ const routes = [
     path: "/records",
     name: "Records",
     component: Records
+  },
+  {
+    path: "/reports",
+    name: "Reports",
+    component: Reports
   },
   {
     path: "/users",
@@ -83,6 +89,7 @@ const routes = [
     name: "MyLocation",
     component: MyLocation
   },
+
   {
     path: "*",
     component: PageNotFound

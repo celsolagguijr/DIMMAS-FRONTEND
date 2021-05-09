@@ -7,6 +7,7 @@ import notificationStore from "./modules/notificationStore";
 import requestStore from "./modules/requestStore";
 import scheduleStore from "./modules/scheduleStore";
 import pageContentStore from "./modules/pageContentStore";
+import reportStore from "./modules/reportStore";
 
 Vue.use(Vuex);
 
@@ -18,6 +19,7 @@ export default new Vuex.Store({
     notificationStore,
     requestStore,
     scheduleStore,
-    pageContentStore
+    pageContentStore,
+    reportStore
   }
 });

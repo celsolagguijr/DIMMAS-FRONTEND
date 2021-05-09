@@ -21,6 +21,10 @@ export default {
       url: "/transactions"
     },
     {
+      name: "Reports",
+      url: "/reports"
+    },
+    {
       name: "Notifications",
       url: "/notifications",
       hasBadge: true
