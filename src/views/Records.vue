@@ -66,15 +66,29 @@
     <b-modal :id="infoModal.id" :title="infoModal.title" @hide="resetInfoModal">
       <b-form @submit.prevent="save" ref="formCase" id="form-case">
         <b-form-group label="Total Cases">
-          <b-form-input type="number" v-model="form.total_cases" required />
+          <b-form-input
+            type="number"
+            v-model="form.total_cases"
+            min="0"
+            step="1"
+            required
+          />
         </b-form-group>
         <b-form-group label="Total Deaths">
-          <b-form-input type="number" v-model="form.total_deaths" required />
+          <b-form-input
+            type="number"
+            v-model="form.total_deaths"
+            min="0"
+            step="1"
+            required
+          />
         </b-form-group>
         <b-form-group label="Total Recoveries">
           <b-form-input
             type="number"
             v-model="form.total_recoveries"
+            min="0"
+            step="1"
             required
           />
         </b-form-group>
@@ -194,6 +208,31 @@ export default {
     save(e) {
       e.preventDefault();
       this.loading = true;
+
+      if (
+        this.form.total_cases < 0 ||
+        this.form.total_deaths < 0 ||
+        this.form.total_recoveries < 0
+      ) {
+        this.alertType = "danger";
+        this.alertMsg = "Cases cannot be negative values.";
+        this.alertShow = true;
+        this.loading = false;
+        return;
+      }
+
+      const enteredCase = this.form.case_date;
+      const dateNow = new Date(this.dateNow());
+      const caseDate = new Date(enteredCase);
+
+      if (dateNow.getTime() < caseDate.getTime()) {
+        this.alertType = "danger";
+        this.alertMsg = "Date case cannot be ahead of today's date";
+        this.alertShow = true;
+        this.loading = false;
+        return;
+      }
+
       setTimeout(async () => {
         const response = await this.addCase(this.form);
         this.alertType = response.data.status === 200 ? "success" : "danger";
@@ -208,24 +247,42 @@ export default {
       }, 500);
     },
     filterDate() {
-      if (
-        !this.filterValues.from ||
-        !this.filterValues.to ||
-        new Date(this.filterValues.from) > new Date(this.filterValues.to)
-      )
-        return;
+      if (this.filterValues.from !== null && this.filterValues.to !== null) {
+        if (
+          new Date(this.filterValues.to).getTime() <
+          new Date(this.filterValues.from)
+        ) {
+          (this.alertShow = true),
+            (this.alertType = "danger"),
+            (this.alertMsg = "Date To must greater than Date From"),
+            (this.loading = false);
+          return;
+        }
+      }
 
       this.loadRecords = true;
 
       setTimeout(() => {
         this.getDailyCases(this.filterValues);
         this.loadRecords = false;
+        (this.alertShow = false),
+          (this.alertType = ""),
+          (this.alertMsg = ""),
+          (this.loading = false);
       }, 500);
     },
     clearFilter() {
       this.filterValues.from = null;
       this.filterValues.to = null;
       this.resetRecords();
+    },
+    dateNow() {
+      const today = new Date();
+      const dd = today.getDate();
+      let mm = today.getMonth() + 1;
+      mm = mm < 10 ? `0${mm}` : mm;
+      const yyyy = today.getFullYear();
+      return `${yyyy}-${mm}-${dd}`;
     }
   },
   created() {
@@ -237,6 +294,7 @@ export default {
     );
     this.form.created_by = authCredentials.id;
   },
+
   computed: {
     ...mapGetters(["dailyCases"]),
     barangays() {

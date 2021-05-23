@@ -10,7 +10,11 @@ const SCHEDAPI = {
   add: async form => await axios.post(scheduleurl, form),
   reSched: async form => await axios.put(scheduleurl, form),
   delete: async form => await axios.put(scheduleurl, form),
-  done: async form => await axios.put(scheduleurl, form)
+  done: async form => await axios.put(scheduleurl, form),
+  generateReport: async form => {
+    const url = `${scheduleurl}?request=${form.request}&barangay_id=${form.barangay_id}&from=${form.filterFrom}&to=${form.filterTo}`;
+    return await axios.get(url);
+  }
 };
 
 export default SCHEDAPI;

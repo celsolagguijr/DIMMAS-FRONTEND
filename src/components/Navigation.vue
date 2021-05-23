@@ -1,22 +1,20 @@
 <template>
   <b-navbar toggleable="lg" type="dark" variant="primary" class="shadow">
-    <b-container>
-      <b-navbar-brand href="/">DIMMAS</b-navbar-brand>
-      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-      <b-collapse id="nav-collapse" is-nav>
-        <b-navbar-nav class="ml-auto">
-          <b-nav-item v-for="(nav, i) in navs" :key="i" :href="nav.url" active>
-            {{ nav.name }}
-            <b-badge
-              variant="danger"
-              v-show="nav.hasBadge && totalNotification != 0"
-            >
-              {{ totalNotification }}
-            </b-badge>
-          </b-nav-item>
-        </b-navbar-nav>
-      </b-collapse>
-    </b-container>
+    <b-navbar-brand href="/">DIMMAS</b-navbar-brand>
+    <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+    <b-collapse id="nav-collapse" is-nav>
+      <b-navbar-nav class="ml-auto">
+        <b-nav-item v-for="(nav, i) in navs" :key="i" :href="nav.url" active>
+          {{ nav.name }}
+          <b-badge
+            variant="danger"
+            v-show="nav.hasBadge && totalNotification != 0"
+          >
+            {{ totalNotification }}
+          </b-badge>
+        </b-nav-item>
+      </b-navbar-nav>
+    </b-collapse>
   </b-navbar>
 </template>
 

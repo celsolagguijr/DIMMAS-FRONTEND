@@ -420,6 +420,17 @@ export default {
           scheduled_date: `${this.requestForm.date} ${this.requestForm.time}`
         };
 
+        if (
+          new Date(formRequest.scheduled_date).getTime() < new Date().getTime()
+        ) {
+          this.requestForm.loading = false;
+          this.dataReloading = false;
+          this.alertType = "danger";
+          this.alertMsg = "Invalid schedule date.";
+          this.alertShow = true;
+          return;
+        }
+
         const response = await this.$store.dispatch(
           "createRequest",
           formRequest
@@ -446,6 +457,17 @@ export default {
           id: this.requestForm.id,
           scheduled_date: `${this.requestForm.date} ${this.requestForm.time}`
         };
+
+        if (
+          new Date(formRequest.scheduled_date).getTime() < new Date().getTime()
+        ) {
+          this.alertType = "danger";
+          this.alertMsg = "Invalid schedule date.";
+          this.alertShow = true;
+          this.requestForm.loading = false;
+          this.dataReloading = false;
+          return;
+        }
 
         const response = await this.$store.dispatch(
           "updateRequest",
@@ -551,6 +573,19 @@ export default {
 
       this.scheduleModal.loading = true;
       this.dataReloading = true;
+
+      if (
+        new Date(
+          `${this.scheduleForm.date} ${this.scheduleForm.time}`
+        ).getTime() < new Date().getTime()
+      ) {
+        this.scheduleModal.loading = false;
+        this.dataReloading = false;
+        this.alertType = "danger";
+        this.alertMsg = "Invalid schedule date.";
+        this.alertShow = true;
+        return;
+      }
 
       const authCredentials = JSON.parse(
         sessionStorage.getItem("usercredentials")

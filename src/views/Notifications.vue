@@ -55,6 +55,16 @@
         ></b-spinner>
       </div>
     </b-container>
+
+    <b-alert
+      v-model="alertShow"
+      class="position-fixed fixed-bottom m-0 rounded-0"
+      style="z-index: 2000;"
+      :variant="alertType"
+      dismissible
+    >
+      {{ alertMsg }}
+    </b-alert>
   </div>
 </template>
 
@@ -75,7 +85,10 @@ export default {
         from: null,
         to: null
       },
-      loading: false
+      loading: false,
+      alertShow: false,
+      alertType: "",
+      alertMsg: ""
     };
   },
   computed: {
@@ -96,18 +109,27 @@ export default {
       );
       this.form.id = authCredentials.id;
 
-      if (
-        this.form.from == null ||
-        this.form.to == null ||
-        new Date(this.form.from) > new Date(this.form.to)
-      )
-        return;
+      if (this.form.from !== null && this.form.to !== null) {
+        if (new Date(this.form.to).getTime() < new Date(this.form.from)) {
+          (this.alertShow = true),
+            (this.alertType = "danger"),
+            (this.alertMsg = "Date To must greater than Date From"),
+            (this.loading = false);
+          return;
+        }
+      }
 
       this.loading = true;
       await this.$store.dispatch("getNotifications", this.form);
       this.loading = false;
+      this.alertShow = false;
+      this.alertType = "";
+      this.alertMsg = "";
     },
     clear() {
+      this.alertShow = false;
+      this.alertType = "";
+      this.alertMsg = "";
       this.form.id = null;
       this.form.from = null;
       this.form.to = null;

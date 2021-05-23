@@ -13,7 +13,7 @@
           streetViewControl: false,
           rotateControl: false,
           fullscreenControl: true,
-          disableDefaultUi: false
+          disableDefaultUi: false,
         }"
       >
         <GmapMarker
@@ -49,9 +49,6 @@
           Total Death :
           <span class="text-warning"> {{ makerInfo.dengueRecord.death }}</span>
         </p>
-        <p style="font-weight:600;">
-          Risk Level : {{ makerInfo.dengueRecord.riskLevel }}
-        </p>
       </div>
     </div>
   </div>
@@ -69,15 +66,15 @@ export default {
         dengueRecord: {
           cases: 0,
           recovery: 0,
-          death: 0
-        }
-      }
+          death: 0,
+        },
+      },
     };
   },
   computed: {
     markers() {
       return this.markerDatas;
-    }
+    },
   },
   methods: {
     showMarkerInfo({ position }) {
@@ -87,12 +84,12 @@ export default {
       this.makerInfo.dengueRecord.cases = position.dengueRecord.cases;
       this.makerInfo.dengueRecord.recovery = position.dengueRecord.recovery;
       this.makerInfo.dengueRecord.death = position.dengueRecord.death;
-    }
+    },
     // mark(event){
     //@click="mark" put it to COmponent
     //  console.log(event.latLng.lat());
     //  console.log(event.latLng.lng());
     // }
-  }
+  },
 };
 </script>

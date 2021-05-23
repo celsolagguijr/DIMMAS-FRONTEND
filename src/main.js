@@ -42,8 +42,8 @@ Vue.use(Vant);
 Vue.use(VueGoogleMaps, {
   load: {
     key: "AIzaSyCkFAJxPsDKr-H7QVlvk6GKNmCgh4uFxO4",
-    libraries: "places",
-  },
+    libraries: "places"
+  }
 });
 
 Vue.use(JsonExcel);
@@ -54,5 +54,5 @@ import "bootstrap-vue/dist/bootstrap-vue.css";
 new Vue({
   router,
   store,
-  render: (h) => h(App),
+  render: h => h(App)
 }).$mount("#app");

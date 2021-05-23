@@ -25,6 +25,10 @@ const REQUESTAPI = {
   },
   requestAction: async form => {
     return await axios.post(requestURL, form);
+  },
+  generateReport: async form => {
+    const url = `${requestURL}?request=${form.request}&barangay_id=${form.barangay_id}&from=${form.filterFrom}&to=${form.filterTo}`;
+    return await axios.get(url);
   }
 };
 

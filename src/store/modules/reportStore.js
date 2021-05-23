@@ -11,49 +11,49 @@ const state = {
         label: "Active Cases",
         borderColor: "red",
         fill: false,
-        data: [],
+        data: []
       },
       {
         label: "Recoveries",
         borderColor: "green",
         fill: false,
-        data: [],
+        data: []
       },
       {
         label: "Deaths",
         borderColor: "black",
         fill: false,
-        data: [],
-      },
-    ],
+        data: []
+      }
+    ]
   },
-  rawData: [],
+  rawData: []
 };
 
 const mutations = {
   [SET_RECORD_DATA](state, payload) {
     state.reportData = {
-      labels: [...payload.map((data) => data.DATES)],
+      labels: [...payload.map(data => data.DATES)],
       datasets: [
         {
           label: "Active Cases",
           borderColor: "red",
           fill: false,
-          data: [...payload.map((data) => data.TOTAL_CASES)],
+          data: [...payload.map(data => data.TOTAL_CASES)]
         },
         {
           label: "Recoveries",
           borderColor: "green",
           fill: false,
-          data: [...payload.map((data) => data.TOTAL_RECOVERIES)],
+          data: [...payload.map(data => data.TOTAL_RECOVERIES)]
         },
         {
           label: "Deaths",
           borderColor: "black",
           fill: false,
-          data: [...payload.map((data) => data.TOTAL_DEATHS)],
-        },
-      ],
+          data: [...payload.map(data => data.TOTAL_DEATHS)]
+        }
+      ]
     };
 
     state.rawData = [...payload];
@@ -66,23 +66,23 @@ const mutations = {
           label: "Active Cases",
           borderColor: "red",
           fill: false,
-          data: [],
+          data: []
         },
         {
           label: "Recoveries",
           borderColor: "green",
           fill: false,
-          data: [],
+          data: []
         },
         {
           label: "Deaths",
           borderColor: "black",
           fill: false,
-          data: [],
-        },
-      ],
+          data: []
+        }
+      ]
     };
-  },
+  }
 };
 
 const actions = {
@@ -92,17 +92,17 @@ const actions = {
   },
   resetReport: ({ commit }) => {
     commit(RESET_DATE);
-  },
+  }
 };
 
 const getters = {
-  reportData: (state) => state.reportData,
-  rawData: (state) => state.rawData,
+  reportData: state => state.reportData,
+  rawData: state => state.rawData
 };
 
 export default {
   state,
   mutations,
   actions,
-  getters,
+  getters
 };

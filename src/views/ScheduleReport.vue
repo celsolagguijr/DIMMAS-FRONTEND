@@ -16,8 +16,7 @@
         >
       </b-list-group>
 
-      <h4>Dengue Case Report</h4>
-
+      <h4>Schedule Report</h4>
       <b-form @submit.prevent="generate" ref="formCase" id="form-case">
         <b-card style="margin-top:2em;">
           <b-card-body>
@@ -74,57 +73,29 @@
 
             <div class="row">
               <div class="col-lg-3 col-md-9 col-sm-12">
-                <b-form-group>
-                  <b-form-checkbox
-                    :v-model="filterOptions.customDate"
-                    :checked="filterOptions.customDate"
-                    name="customDate"
-                    @change="showCustomdate"
-                  >
-                    Custom Date
-                  </b-form-checkbox>
+                <label for="">Date Filter</label>
+                <b-form-group class="ml-4">
+                  <label for="from-date">From:</label>
+                  <b-form-input
+                    type="date"
+                    id="from-date"
+                    class="mb-3"
+                    name="fromDate"
+                    v-model="filterData.filterCustomDate.from"
+                    required
+                  ></b-form-input>
+                  <label for="from-to">To:</label>
+                  <b-form-input
+                    type="date"
+                    id="from-to"
+                    name="fromTo"
+                    v-model="filterData.filterCustomDate.to"
+                    required
+                  ></b-form-input>
                 </b-form-group>
-
-                <div v-if="filterOptions.customDate">
-                  <b-form-group class="ml-4">
-                    <label for="from-date">From:</label>
-                    <b-form-input
-                      type="date"
-                      id="from-date"
-                      class="mb-3"
-                      name="fromDate"
-                      v-model="filterData.filterCustomDate.from"
-                      required
-                    ></b-form-input>
-                    <label for="from-to">To:</label>
-                    <b-form-input
-                      type="date"
-                      id="from-to"
-                      name="fromTo"
-                      v-model="filterData.filterCustomDate.to"
-                      required
-                    ></b-form-input>
-                  </b-form-group>
-                </div>
               </div>
             </div>
             <hr />
-            <div class="row">
-              <div class="col-lg-3 col-md-9 col-sm-12">
-                <b-form-group label="Filter By" v-slot="{ ariaDescribedby }">
-                  <b-form-radio
-                    v-for="dateFilter in filterOptions.dateFilters"
-                    v-model="filterData.filterDate"
-                    :aria-describedby="ariaDescribedby"
-                    :key="dateFilter"
-                    name="radio-inline"
-                    :value="dateFilter"
-                    required
-                    >{{ dateFilter }}</b-form-radio
-                  >
-                </b-form-group>
-              </div>
-            </div>
 
             <div class="row mt-2 mb-2">
               <div class="col-lg-3 col-md-12 col-sm-12 m-1">
@@ -133,13 +104,9 @@
                 >
               </div>
               <div class="col-lg-3 col-md-12 col-sm-12 m-1">
-                <JsonExcel
-                  class="btn btn-primary w-100"
-                  worksheet="My Worksheet"
-                  name="data.xls"
-                >
-                  Download Data
-                </JsonExcel>
+                <button class="btn btn-primary w-100" @click="savedPDF">
+                  Download
+                </button>
               </div>
               <div class="col-lg-3 col-md-12 col-sm-12 m-1">
                 <b-button
@@ -169,7 +136,17 @@
         </div>
 
         <b-card-body>
-          <line-chart :chartData="reportData" />
+          <b-table
+            bordered
+            fixed
+            no-border-collapse
+            :items="scheduleReport"
+            :fields="fields"
+            head-variant="light"
+            small
+            style="font-size:.9rem"
+            responsive
+          ></b-table>
         </b-card-body>
       </b-card>
 
@@ -188,18 +165,16 @@
 
 <script>
 import { mapGetters } from "vuex";
-import LineChart from "../components/LineChart.vue";
 import Navigation from "../components/Navigation";
-import JsonExcel from "vue-json-excel";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 export default {
-  components: { Navigation, LineChart, JsonExcel },
+  components: { Navigation },
   data() {
     return {
       filterOptions: {
         types: ["All Barangay", "Choose Barangay"],
-        dateFilters: ["Day", "Month", "Year"],
-        customDate: false
       },
       filterData: {
         filterType: "",
@@ -207,17 +182,43 @@ export default {
         filterBarangay: "",
         filterCustomDate: {
           from: "",
-          to: ""
-        }
+          to: "",
+        },
       },
       loading: false,
       alertShow: false,
       alertType: "",
-      alertMsg: ""
+      alertMsg: "",
+      fields: [
+        {
+          key: "SCHED_FOR",
+          label: "Scheduled For",
+        },
+        {
+          key: "SCHED_TO",
+          label: "Scheduled To",
+        },
+        {
+          key: "SCHED_BY",
+          label: "Scheduled By",
+        },
+        {
+          key: "REMARKS",
+          label: "Remarks",
+        },
+        {
+          key: "STATUS",
+          label: "Status",
+        },
+        {
+          key: "SCHEDULED_DATE",
+          label: "Scheduled Date",
+        },
+      ],
     };
   },
   computed: {
-    ...mapGetters(["showBrgys", "reportData", "rawData"])
+    ...mapGetters(["showBrgys", "scheduleReport"]),
   },
   async mounted() {
     this.$store.dispatch("getBrgys");
@@ -225,11 +226,10 @@ export default {
   methods: {
     generate() {
       const requestParams = {
-        request: "getReportData",
-        barangay: this.filterData.filterBarangay,
-        filterDateBy: this.filterData.filterDate,
-        customDateFrom: this.filterData.filterCustomDate.from,
-        customDateTo: this.filterData.filterCustomDate.to
+        request: "schedReport",
+        barangay_id: this.filterData.filterBarangay,
+        filterFrom: this.filterData.filterCustomDate.from,
+        filterTo: this.filterData.filterCustomDate.to,
       };
 
       if (
@@ -251,7 +251,7 @@ export default {
       this.loading = true;
 
       setTimeout(() => {
-        this.$store.dispatch("getReportData", requestParams);
+        this.$store.dispatch("generateScheduleReport", requestParams);
         (this.alertShow = false),
           (this.alertType = "false"),
           (this.alertMsg = ""),
@@ -264,23 +264,33 @@ export default {
       this.filterData.filterBarangay = "";
       this.filterData.filterCustomDate.from = "";
       this.filterData.filterCustomDate.to = "";
-      this.filterOptions.customDate = false;
       this.alertShow = false;
       this.alertType = "";
       this.alertMsg = "";
-      this.$store.dispatch("resetReport");
+      this.$store.dispatch("resetScheduleReport");
     },
     resetBarangay() {
       if (this.filterData.filterType === "All Barangay") {
         this.filterData.filterBarangay = "";
       }
     },
-    showCustomdate() {
-      this.filterOptions.customDate = !this.filterOptions.customDate;
-      this.filterData.filterCustomDate.from = "";
-      this.filterData.filterCustomDate.to = "";
-    }
-  }
+    savedPDF() {
+      const doc = new jsPDF();
+
+      const rawData = this.$store.getters["scheduleReport"];
+      let body = [...rawData.map((data) => [...Object.values(data)])];
+
+      doc.text("Schedule Report", 10, 20);
+
+      doc.autoTable({
+        margin: { top: 30 },
+        head: [[...this.fields.map((data) => data.label)]],
+        body: [...body],
+      });
+
+      doc.save("Report.pdf");
+    },
+  },
 };
 </script>
 

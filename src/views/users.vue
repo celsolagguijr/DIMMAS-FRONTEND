@@ -256,6 +256,10 @@ export default {
       this.form.barangay = 0;
       this.form.password = "";
       this.form.confirmPassword = "";
+
+      this.formAlert.msg = "";
+      this.formAlert.alertType = "";
+      this.formAlert.show = false;
     },
     alertClose() {
       this.formAlert.msg = "";

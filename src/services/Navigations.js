@@ -30,6 +30,14 @@ export default {
       hasBadge: true
     },
     {
+      name: "About",
+      url: "/about"
+    },
+    {
+      name: "Change Password",
+      url: "/change-password"
+    },
+    {
       name: "Logout",
       url: "/logout"
     }
@@ -46,6 +54,14 @@ export default {
     {
       name: "Page Content",
       url: "/pagecontent"
+    },
+    {
+      name: "About",
+      url: "/about"
+    },
+    {
+      name: "Change Password",
+      url: "/change-password"
     },
     {
       name: "Logout",
@@ -65,6 +81,14 @@ export default {
       name: "Notifications",
       url: "/notifications",
       hasBadge: true
+    },
+    {
+      name: "About",
+      url: "/about"
+    },
+    {
+      name: "Change Password",
+      url: "/change-password"
     },
     {
       name: "Logout",

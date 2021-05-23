@@ -14,6 +14,10 @@ import DinfoMobile from "../views/DinfoMobile.vue";
 import ViewContentMobile from "../views/ViewContentMobile.vue";
 import MyLocation from "../views/ViewYourLocation.vue";
 import Reports from "../views/Reports.vue";
+import About from "../views/About.vue";
+import ChangePassword from "../views/ChangePassword.vue";
+import ScheduleReport from "../views/ScheduleReport.vue";
+import RequestReport from "../views/RequestReport.vue";
 
 Vue.use(VueRouter);
 
@@ -27,6 +31,11 @@ const routes = [
     path: "/admin",
     name: "Dashboard",
     component: Dashboard
+  },
+  {
+    path: "/about",
+    name: "About",
+    component: About
   },
   {
     path: "/logout",
@@ -48,6 +57,16 @@ const routes = [
     component: Reports
   },
   {
+    path: "/request-report",
+    name: "RequestReport",
+    component: RequestReport
+  },
+  {
+    path: "/schedule-report",
+    name: "ScheduleReport",
+    component: ScheduleReport
+  },
+  {
     path: "/users",
     name: "Users",
     component: Users
@@ -66,6 +85,11 @@ const routes = [
     path: "/pagecontent",
     name: "PageContent",
     component: PageContent
+  },
+  {
+    path: "/change-password",
+    name: "ChangePassword",
+    component: ChangePassword
   },
   {
     path: "/mobile-home",

@@ -1,77 +1,78 @@
 <template>
-  <b-container>
-    <b-row fluid="xl" class="vh-100">
-      <b-col></b-col>
-      <b-col lg="4" md="6" sm="12" xs="12" class="align-self-center">
-        <b-card
-          border-variant="primary"
-          header="Login into DIMMAS"
-          header-bg-variant="primary"
-          header-text-variant="white"
-          class="shadow"
-        >
-          <b-alert
-            :show="dismissCountDown"
-            dismissible
-            fade
-            :variant="alertType"
-            @dismiss-count-down="countDownChanged"
-          >
-            {{ msg }}
-          </b-alert>
+  <div class="bg-primary">
+    <b-container>
+      <b-row fluid="xl" class="vh-100">
+        <b-col></b-col>
+        <b-col lg="4" md="6" sm="12" xs="12" class="align-self-center">
+          <b-card class="shadow">
+            <h6 class="mb-3 text-left text-primary">
+              DENGUE INFORMATION MANAGEMENT AND MAPPING SYSTEM (DIMMAS)
+            </h6>
+            <hr />
+            <b-alert
+              :show="dismissCountDown"
+              dismissible
+              fade
+              :variant="alertType"
+              @dismiss-count-down="countDownChanged"
+            >
+              {{ msg }}
+            </b-alert>
 
-          <b-form @submit.prevent="edit" ref="loginForm" id="login-form">
-            <b-form-group id="input-group-1">
-              <b-input-group>
-                <b-input-group-prepend is-text>
-                  <b-icon icon="person-fill"></b-icon>
-                </b-input-group-prepend>
-                <b-form-input
-                  type="text"
-                  placeholder="Username"
-                  v-model="form.username"
-                  autocomplete="off"
-                  required
-                ></b-form-input>
-              </b-input-group>
-            </b-form-group>
+            <b-form @submit.prevent="login" ref="loginForm" id="login-form">
+              <b-form-group id="input-group-1">
+                <b-input-group>
+                  <b-input-group-prepend is-text>
+                    <b-icon icon="person-fill"></b-icon>
+                  </b-input-group-prepend>
+                  <b-form-input
+                    type="text"
+                    placeholder="Username"
+                    v-model="form.username"
+                    autocomplete="off"
+                    required
+                  ></b-form-input>
+                </b-input-group>
+              </b-form-group>
 
-            <b-form-group id="input-group-2">
-              <b-input-group>
-                <b-input-group-prepend is-text>
-                  <b-icon icon="lock-fill"></b-icon>
-                </b-input-group-prepend>
-                <b-form-input
-                  type="password"
-                  placeholder="Password"
-                  v-model="form.password"
-                  required
-                ></b-form-input>
-              </b-input-group>
-            </b-form-group>
+              <b-form-group id="input-group-2">
+                <b-input-group>
+                  <b-input-group-prepend is-text>
+                    <b-icon icon="lock-fill"></b-icon>
+                  </b-input-group-prepend>
+                  <b-form-input
+                    type="password"
+                    placeholder="Password"
+                    v-model="form.password"
+                    required
+                  ></b-form-input>
+                </b-input-group>
+              </b-form-group>
 
-            <div class="d-flex justify-content-end">
-              <div class="mt-2" v-show="loading">
-                <b-spinner small variant="primary" label="Spinning"></b-spinner>
-                <span class="text-primary ml-2 mr-2" style="font-size: .8em"
-                  >Logging in...</span
-                >
+              <div class="d-flex justify-content-end">
+                <div class="mt-2" v-show="loading">
+                  <b-spinner
+                    small
+                    variant="primary"
+                    label="Spinning"
+                  ></b-spinner>
+                  <span class="text-primary ml-2 mr-2" style="font-size: .8em"
+                    >Logging in...</span
+                  >
+                </div>
+
+                <b-button type="submit" variant="primary">
+                  Login
+                  <b-icon icon="arrow-right-square"></b-icon>
+                </b-button>
               </div>
-
-              <b-button
-                variant="primary"
-                @click="$refs.loginForm.requestSubmit()"
-              >
-                Login
-                <b-icon icon="arrow-right-square"></b-icon>
-              </b-button>
-            </div>
-          </b-form>
-        </b-card>
-      </b-col>
-      <b-col></b-col>
-    </b-row>
-  </b-container>
+            </b-form>
+          </b-card>
+        </b-col>
+        <b-col></b-col>
+      </b-row>
+    </b-container>
+  </div>
 </template>
 
 <script>
@@ -100,7 +101,7 @@ export default {
     showAlert() {
       this.dismissCountDown = this.dismissSecs;
     },
-    async edit(e) {
+    async login(e) {
       e.preventDefault();
 
       this.loading = true;
